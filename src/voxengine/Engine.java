@@ -50,7 +50,7 @@ public class Engine {
     
     public void run() {
         timer = new Timer();
-        scene = new TextScene();
+        scene = new SimpleTextureScene();
         try {
             init();
             scene.prepare();
