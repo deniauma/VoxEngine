@@ -10,14 +10,18 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import voxengine.graphics.Texture;
 import voxengine.math.Vector2f;
+import voxengine.math.Vector3f;
 
 /**
  *
- * @author Adminmatt
+ * @author deniauma
  */
-public class Rect {
+public class Rect3d {
     
-    protected Vector2f position;
+    public final char X_AXIS = 'x';
+    public final char Y_AXIS = 'y';
+    public final char Z_AXIS = 'z';
+    protected Vector3f position;
     protected int width;
     protected int height;
     protected final Color color;
@@ -30,9 +34,8 @@ public class Rect {
     protected FloatBuffer vertices;
     private float[] verticesArray;
     
-    
-    public Rect(Color color, Texture texture, float x, float y, int width, int height, int tx, int ty, int twidth, int theight) {
-        this.position = new Vector2f(x, y);
+    public Rect3d(Color color, Texture texture, float x, float y, float z, int width, int height, int tx, int ty, int twidth, int theight, char axis) {
+        this.position = new Vector3f(x, y, z);
         this.color = color;
         this.texture = texture;
         this.width = width;
@@ -41,7 +44,7 @@ public class Rect {
         this.twidth = twidth;
         this.theight = theight;
         
-        vertices = BufferUtils.createFloatBuffer(this.nbvertices * 7);
+        vertices = BufferUtils.createFloatBuffer(this.nbvertices * 8);
         
         float r = color.getRed() / 255f;
         float g = color.getGreen() / 255f;
@@ -50,6 +53,7 @@ public class Rect {
         /* Vertex positions */
         float x1 = position.x;
         float y1 = position.y;
+        float z2 = position.z;
         float x2 = x1 + width;
         float y2 = y1 + height;
 
@@ -59,17 +63,17 @@ public class Rect {
         float s2 = (s1 + twidth) / texture.getWidth();
         float t2 = (t1 + theight) / texture.getHeight();
         
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
-        vertices.put(x1).put(y2).put(r).put(g).put(b).put(s1).put(t2);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x1).put(y1).put(z).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x1).put(y2).put(z).put(r).put(g).put(b).put(s1).put(t2);
+        vertices.put(x2).put(y2).put(z).put(r).put(g).put(b).put(s2).put(t2);
 
-        vertices.put(x1).put(y1).put(r).put(g).put(b).put(s1).put(t1);
-        vertices.put(x2).put(y2).put(r).put(g).put(b).put(s2).put(t2);
-        vertices.put(x2).put(y1).put(r).put(g).put(b).put(s2).put(t1);
+        vertices.put(x1).put(y1).put(z).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(z).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y1).put(z).put(r).put(g).put(b).put(s2).put(t1);
         
         vertices.flip();
         
-        verticesArray = new float[this.nbvertices * 7];
+        verticesArray = new float[this.nbvertices * 8];
         vertices.get(verticesArray);
     }
     

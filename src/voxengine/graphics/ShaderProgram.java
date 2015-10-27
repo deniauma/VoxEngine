@@ -5,12 +5,15 @@
  */
 package voxengine.graphics;
 
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
+import voxengine.math.Matrix2f;
 
-import voxengine.math.*;
+import voxengine.math.joml.*;
 
 /**
  * This class represents a shader program.
@@ -128,7 +131,9 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector2f value) {
-        glUniform2fv(location, value.getBuffer());
+        FloatBuffer fb = BufferUtils.createFloatBuffer(4);
+        value.get(fb);
+        glUniform2fv(location, fb);
     }
 
     /**
@@ -138,7 +143,9 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector3f value) {
-        glUniform3fv(location, value.getBuffer());
+        FloatBuffer fb = BufferUtils.createFloatBuffer(3);
+        value.get(fb);
+        glUniform3fv(location, fb);
     }
 
     /**
@@ -148,7 +155,9 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Vector4f value) {
-        glUniform4fv(location, value.getBuffer());
+        FloatBuffer fb = BufferUtils.createFloatBuffer(4);
+        value.get(fb);
+        glUniform4fv(location, fb);
     }
 
     /**
@@ -168,7 +177,9 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Matrix3f value) {
-        glUniformMatrix3fv(location, false, value.getBuffer());
+        FloatBuffer fb = BufferUtils.createFloatBuffer(9);
+        value.get(fb);
+        glUniformMatrix3fv(location, false, fb);
     }
 
     /**
@@ -178,7 +189,9 @@ public class ShaderProgram {
      * @param value Value to set
      */
     public void setUniform(int location, Matrix4f value) {
-        glUniformMatrix4fv(location, false, value.getBuffer());
+        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+        value.get(fb);
+        glUniformMatrix4fv(location, false, fb);
     }
 
     /**
