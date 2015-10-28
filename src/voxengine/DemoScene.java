@@ -14,6 +14,7 @@ import voxengine.graphics.Texture;
 import voxengine.graphics.renderer.CubeRenderer;
 import voxengine.graphics.shape.Cube;
 import voxengine.graphics.shape.Rect;
+import voxengine.math.joml.Matrix4f;
 
 /**
  *
@@ -26,6 +27,9 @@ public class DemoScene implements Scene{
     private Rect rect, rect1;
     private Cube cube;
     private Camera camera;
+    private float previousAngle = 0f;
+    private float angle = 0f;
+    private float anglePerSecond = 50f;
 
     @Override
     public void input() {
@@ -34,12 +38,16 @@ public class DemoScene implements Scene{
 
     @Override
     public void update(float delta) {
-        
+        previousAngle = angle;
+        angle += delta * anglePerSecond;
     }
 
     @Override
     public void render(float alpha) {
         /* Clear drawing area */
+        float lerpAngle = (1f - alpha) * previousAngle + alpha * angle;
+        Matrix4f model = new Matrix4f().rotate((float) Math.toRadians(lerpAngle), 0f, 0f, 1f);
+        renderer.updateUniModel(model);
         renderer.clear();
         
         /* Draw objects */

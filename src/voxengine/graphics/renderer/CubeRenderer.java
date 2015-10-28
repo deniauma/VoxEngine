@@ -31,11 +31,14 @@ public class CubeRenderer {
     private Shader vertexShader;
     private Shader fragmentShader;
     private ShaderProgram program;
+    
+    private int uniModel;
+    private int uniView;
+    private int uniProjection;
 
     private FloatBuffer vertices;
     private int numVertices;
     private boolean drawing;
-    private float angle = 0f;
     
     private Camera camera;
 
@@ -94,18 +97,18 @@ public class CubeRenderer {
 
         /* Set model matrix to identity matrix */
         Matrix4f model = new Matrix4f();
-        int uniModel = program.getUniformLocation("model");
+        uniModel = program.getUniformLocation("model");
         program.setUniform(uniModel, model);
 
         /* Set view matrix to identity matrix 
         Matrix4f view = new Matrix4f();*/
         Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
-        int uniView = program.getUniformLocation("view");
+        uniView = program.getUniformLocation("view");
         program.setUniform(uniView, view);
 
         /* Set projection matrix to a perpective projection */
         Matrix4f projection = new Matrix4f().perspective((float) Math.toRadians(45.0f), (float) width / height, 0.01f, 100f);
-        int uniProjection = program.getUniformLocation("projection");
+        uniProjection = program.getUniformLocation("projection");
         program.setUniform(uniProjection, projection);
 
         /* Enable blending */
@@ -130,9 +133,6 @@ public class CubeRenderer {
         }
         drawing = true;
         numVertices = 0;
-        Matrix4f model = new Matrix4f().rotate(angle, 0f, 0f, 1f);
-        int uniModel = program.getUniformLocation("model");
-        program.setUniform(uniModel, model);
     }
 
     /**
@@ -143,7 +143,6 @@ public class CubeRenderer {
             throw new IllegalStateException("Renderer isn't drawing!");
         }
         drawing = false;
-        angle += 0.01;
         flush();
     }
 
@@ -226,5 +225,16 @@ public class CubeRenderer {
         this.camera = camera;
     }
     
+    public void updateUniModel(Matrix4f model) {
+        program.setUniform(uniModel, model);
+    }
+    
+    public void updateUniView(Matrix4f view) {
+        program.setUniform(uniView, view);
+    }
+    
+    public void updateUniProjection(Matrix4f projection) {
+        program.setUniform(uniProjection, projection);
+    }
     
 }
