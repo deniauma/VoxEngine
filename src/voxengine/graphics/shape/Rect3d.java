@@ -34,7 +34,7 @@ public class Rect3d {
     protected FloatBuffer vertices;
     private float[] verticesArray;
     
-    public Rect3d(Color color, Texture texture, float x, float y, float z, int width, int height, int tx, int ty, int twidth, int theight, char axis) {
+    public Rect3d(Color color, Texture texture, float x, float y, float z, int width, int height, int tx, int ty, int twidth, int theight) {
         this.position = new Vector3f(x, y, z);
         this.color = color;
         this.texture = texture;
@@ -53,7 +53,6 @@ public class Rect3d {
         /* Vertex positions */
         float x1 = position.x;
         float y1 = position.y;
-        float z2 = position.z;
         float x2 = x1 + width;
         float y2 = y1 + height;
 

@@ -107,7 +107,7 @@ public class CubeRenderer {
         program.setUniform(uniView, view);
 
         /* Set projection matrix to a perpective projection */
-        Matrix4f projection = new Matrix4f().perspective((float) Math.toRadians(45.0f), (float) width / height, 0.01f, 100f);
+        Matrix4f projection = new Matrix4f().perspective((float) Math.toRadians(45.0f), (float) width / height, 0.01f, 1000f);
         uniProjection = program.getUniformLocation("projection");
         program.setUniform(uniProjection, projection);
 
@@ -223,6 +223,8 @@ public class CubeRenderer {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
+        program.setUniform(uniView, view);
     }
     
     public void updateUniModel(Matrix4f model) {

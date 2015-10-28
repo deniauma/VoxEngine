@@ -25,6 +25,51 @@ public class Camera {
         this.position = position;
         this.view = view;
     }
+    
+    private Vector3f calculateDirection() {
+        Vector3f direction = new Vector3f();
+        view.sub(position, direction);
+        System.out.println("Direction vector: " + direction.x + " " + direction.y + " " + direction.z);
+        direction.normalize();
+        System.out.println("Direction normalized vector: " + direction.x + " " + direction.y + " " + direction.z);
+        return direction;
+    }
+    
+    public void moveForward(float move) {
+        Vector3f direction = calculateDirection();
+        Vector3f mvm = new Vector3f(direction.x * move, direction.y * move, direction.z * move);
+        //System.out.println("Movement vector: " + mvm.x + " " + mvm.y + " " + mvm.z);
+        position.add(mvm);
+        view.add(mvm);
+    }
+    
+    public void moveBackward(float move) {
+        Vector3f direction = calculateDirection();
+        Vector3f mvm = new Vector3f(direction.x * move, direction.y * move, direction.z * move);
+        position.sub(mvm);
+        view.sub(mvm);
+    }
+    
+    public void moveRight(float move) {
+        Vector3f direction = calculateDirection();
+        Vector3f rightDirection = new Vector3f(direction.y, -direction.x, direction.z);
+        Vector3f mvm = new Vector3f(rightDirection.x * move, rightDirection.y * move, rightDirection.z * move);
+        position.add(mvm);
+        view.add(mvm);
+    }
+    
+    public void moveLeft(float move) {
+        Vector3f direction = calculateDirection();
+        Vector3f leftDirection = new Vector3f(-direction.y, direction.x, direction.z);
+        Vector3f mvm = new Vector3f(leftDirection.x * move, leftDirection.y * move, leftDirection.z * move);
+        position.add(mvm);
+        view.add(mvm);
+    }
+    
+    public void moveCamera(Vector3f move) {
+        Vector3f direction = calculateDirection();
+        
+    }
 
     public Vector3f getPosition() {
         return position;

@@ -123,6 +123,9 @@ public class Engine {
             delta = timer.getDelta();
             accumulator += delta;
             
+            /* handle inputs */
+            scene.input();
+            
             /* Update game and timer UPS if enough time has passed */
             while (accumulator >= interval) {
                 scene.update(interval);
