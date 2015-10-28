@@ -9,26 +9,16 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import voxengine.graphics.Camera;
 import voxengine.graphics.Shader;
 import voxengine.graphics.ShaderProgram;
 import voxengine.graphics.VertexArrayObject;
 import voxengine.graphics.VertexBufferObject;
 import voxengine.math.joml.Matrix4f;
+import voxengine.math.joml.Vector3f;
 
 /**
  *
@@ -46,12 +36,16 @@ public class CubeRenderer {
     private int numVertices;
     private boolean drawing;
     private float angle = 0f;
+    
+    private Camera camera;
 
     /**
      * Initializes the renderer.
+     * @param camera (use to set up the lookAt matrix)
      */
-    public void init() {
-
+    public void init(Camera camera) {
+        
+        this.camera = camera;
         /* Generate Vertex Array Object */
         vao = new VertexArrayObject();
         vao.bind();
@@ -105,7 +99,7 @@ public class CubeRenderer {
 
         /* Set view matrix to identity matrix 
         Matrix4f view = new Matrix4f();*/
-        Matrix4f view = new Matrix4f().lookAt(1f, -90f, 1f, 50f, 0, 50f, 0f, 0f, 1f);
+        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
         int uniView = program.getUniformLocation("view");
         program.setUniform(uniView, view);
 
@@ -116,7 +110,7 @@ public class CubeRenderer {
 
         /* Enable blending */
         glEnable(GL_BLEND);
-        glEnable(GL11.GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
@@ -223,4 +217,14 @@ public class CubeRenderer {
         program.enableVertexAttribute(texAttrib);
         program.pointVertexAttribute(texAttrib, 2, 8 * Float.BYTES, 6 * Float.BYTES);
     }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
+    
+    
 }

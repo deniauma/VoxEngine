@@ -9,13 +9,11 @@ import java.awt.Color;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
-import voxengine.graphics.Renderer;
+import voxengine.graphics.Camera;
 import voxengine.graphics.Texture;
-import voxengine.graphics.renderer.BasicRenderer;
 import voxengine.graphics.renderer.CubeRenderer;
 import voxengine.graphics.shape.Cube;
 import voxengine.graphics.shape.Rect;
-import voxengine.math.joml.Matrix4f;
 
 /**
  *
@@ -27,6 +25,7 @@ public class DemoScene implements Scene{
     private Texture texture;
     private Rect rect, rect1;
     private Cube cube;
+    private Camera camera;
 
     @Override
     public void input() {
@@ -60,7 +59,8 @@ public class DemoScene implements Scene{
         int width = widthBuffer.get();
         int height = heightBuffer.get();
         renderer = new CubeRenderer();
-        renderer.init();
+        camera = new Camera(1f, -90f, 1f, 50f, 0, 50f);
+        renderer.init(camera);
         
         /* Create texture */
         texture = Texture.loadTexture("resources/example.png");
