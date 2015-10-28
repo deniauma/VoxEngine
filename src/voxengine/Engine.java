@@ -105,7 +105,7 @@ public class Engine {
         glfwSetKeyCallback(window, keyCallback);
         
         /* Set the cursor mode */
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         
         /* Initialize timer */
         timer.init();

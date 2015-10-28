@@ -6,6 +6,7 @@
 package voxengine;
 
 import java.awt.Color;
+import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.glfw.GLFW.*;
@@ -32,6 +33,9 @@ public class DemoScene implements Scene{
     private float previousAngle = 0f;
     private float angle, cAngle = 0f;
     private float anglePerSecond = 50f;
+    private DoubleBuffer previousXpos = BufferUtils.createDoubleBuffer(1);
+    private DoubleBuffer previousYpos = BufferUtils.createDoubleBuffer(1);
+    private float mouseSpeed = 0.1f;
     
     private long window;
 
@@ -63,9 +67,23 @@ public class DemoScene implements Scene{
         
         state = glfwGetKey(window, GLFW_KEY_E);
         if (state == GLFW_PRESS) {
-            camera.turnRight(10);
+            camera.turnRight(360-10);
             renderer.setCamera(camera);
         }
+        
+        DoubleBuffer xpos = BufferUtils.createDoubleBuffer(1);
+        DoubleBuffer ypos = BufferUtils.createDoubleBuffer(1);
+        glfwGetCursorPos(window, xpos, ypos);
+        double deltaXpos = xpos.get(0) - previousXpos.get(0);
+        double deltaYpos = ypos.get(0) - previousYpos.get(0);
+        previousXpos = xpos;
+        previousYpos = ypos;
+        float horizontalAngle = mouseSpeed * (float) deltaXpos;
+        float verticalAngle = mouseSpeed * (float) deltaYpos;
+        //System.out.println("horizontalAngle: "+horizontalAngle+", verticalAngle: "+verticalAngle);
+        camera.turnRight(horizontalAngle);
+        renderer.setCamera(camera);
+        //System.out.println("deltaXpos: "+deltaXpos+", deltaYpos: "+deltaYpos);
     }
 
     @Override
@@ -83,7 +101,7 @@ public class DemoScene implements Scene{
         
         /* Draw objects */
         renderer.begin();
-        renderer.render(floor.getVertices(), floor.getNbvertices());
+        //renderer.render(floor.getVertices(), floor.getNbvertices());
         renderer.render(cube.getVertices(), cube.getNbvertices());
         renderer.end();
     }
@@ -109,13 +127,14 @@ public class DemoScene implements Scene{
         floor = new Rect3d(Color.GREEN, texture, -100, -100, 0, 1000, 1000, 0, 0, 0, 0);
         System.out.println("DONE");
         
-        Vector3f newView = new Vector3f(1,1,0);
-        Vector3f center = new Vector3f(1,0,0);
+        Vector3f newView = new Vector3f(1,0,1);
+        Vector3f center = new Vector3f(1,-90,1);
         new Matrix4f().translate(center)
-                      .rotate((float) Math.toRadians(90), 0f, 0f, 1f)
+                      .rotate((float) Math.toRadians(360-90), 0f, 0f, 1f)
                       .translate(center.negate())
                       .transformPoint(newView);
         System.out.println("Camera position: "+newView.x+" "+newView.y+" "+newView.z);
+        glfwGetCursorPos(window, previousXpos, previousYpos);
     }
 
     @Override

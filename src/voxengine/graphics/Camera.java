@@ -18,6 +18,8 @@ public class Camera {
     public Vector3f position;
     public Vector3f view;
     
+    private float previousAngle = 0f;
+    
     public Camera(float posX, float posY, float posZ, float viewX, float viewY, float viewZ) {
         position = new Vector3f(posX, posY, posZ);
         view = new Vector3f(viewX, viewY, viewZ);
@@ -72,14 +74,17 @@ public class Camera {
     }
     
     public void turnRight(float angle) {
-        Vector3f newView = new Vector3f(view);
-        new Matrix4f().translate(position)
-                      .rotate((float) Math.toRadians(angle), 0f, 0f, 1f)
-                      //.translate(position.negate())
-                      .transformPoint(newView);
-        System.out.println("Camera position: "+position.x+" "+position.y+" "+position.z);
-        System.out.println("Previous view: "+view.x+" "+view.y+" "+view.z+" New view: "+newView.x+" "+newView.y+" "+newView.z);
-        view.set(newView);
+        if(angle != previousAngle) {
+            System.out.println("Angle: " + angle);
+            Vector3f newView = new Vector3f(view);
+            new Matrix4f().translate(position)
+                    .rotate((float) Math.toRadians(angle), 0f, 0f, 1f)
+                    .translate(position.negate())
+                    .transformPoint(newView);
+            System.out.println("Camera position: " + position.x + " " + position.y + " " + position.z);
+            System.out.println("Previous view: " + view.x + " " + view.y + " " + view.z + " New view: " + newView.x + " " + newView.y + " " + newView.z);
+            view.set(newView);
+        }
     }
 
     public Vector3f getPosition() {
