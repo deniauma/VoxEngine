@@ -9,6 +9,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -44,6 +45,7 @@ public class CubeRenderer {
     private FloatBuffer vertices;
     private int numVertices;
     private boolean drawing;
+    private float angle = 0f;
 
     /**
      * Initializes the renderer.
@@ -103,7 +105,7 @@ public class CubeRenderer {
 
         /* Set view matrix to identity matrix 
         Matrix4f view = new Matrix4f();*/
-        Matrix4f view = new Matrix4f().lookAt(1f, 1f, 1f, 50f, 50f, 50f, 0f, 0f, 1f);
+        Matrix4f view = new Matrix4f().lookAt(1f, -90f, 1f, 50f, 0, 50f, 0f, 0f, 1f);
         int uniView = program.getUniformLocation("view");
         program.setUniform(uniView, view);
 
@@ -114,6 +116,7 @@ public class CubeRenderer {
 
         /* Enable blending */
         glEnable(GL_BLEND);
+        glEnable(GL11.GL_DEPTH_TEST);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
@@ -133,6 +136,9 @@ public class CubeRenderer {
         }
         drawing = true;
         numVertices = 0;
+        Matrix4f model = new Matrix4f().rotate(angle, 0f, 0f, 1f);
+        int uniModel = program.getUniformLocation("model");
+        program.setUniform(uniModel, model);
     }
 
     /**
@@ -143,6 +149,7 @@ public class CubeRenderer {
             throw new IllegalStateException("Renderer isn't drawing!");
         }
         drawing = false;
+        angle += 0.01;
         flush();
     }
 
