@@ -37,6 +37,9 @@ public class Engine {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, GL_TRUE);
             }
+            if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            }
         }
     };
     
@@ -105,7 +108,7 @@ public class Engine {
         glfwSetKeyCallback(window, keyCallback);
         
         /* Set the cursor mode */
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         
         /* Initialize timer */
         timer.init();

@@ -65,12 +65,6 @@ public class DemoScene implements Scene{
             renderer.setCamera(camera);
         }
         
-        state = glfwGetKey(window, GLFW_KEY_E);
-        if (state == GLFW_PRESS) {
-            camera.turnRight(360-10);
-            renderer.setCamera(camera);
-        }
-        
         DoubleBuffer xpos = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer ypos = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(window, xpos, ypos);
@@ -81,27 +75,28 @@ public class DemoScene implements Scene{
         float horizontalAngle = mouseSpeed * (float) deltaXpos;
         float verticalAngle = mouseSpeed * (float) deltaYpos;
         //System.out.println("horizontalAngle: "+horizontalAngle+", verticalAngle: "+verticalAngle);
-        camera.turnRight(horizontalAngle);
+        camera.turn(horizontalAngle, verticalAngle);
         renderer.setCamera(camera);
         //System.out.println("deltaXpos: "+deltaXpos+", deltaYpos: "+deltaYpos);
     }
 
     @Override
     public void update(float delta) {
-        
+        previousAngle = angle;
+        angle += delta * anglePerSecond;
     }
 
     @Override
     public void render(float alpha) {
         /* Clear drawing area */
-        float lerpAngle = (1f - alpha) * previousAngle + alpha * angle;
+        /*float lerpAngle = (1f - alpha) * previousAngle + alpha * angle * 0.00001f;
         Matrix4f model = new Matrix4f().rotate((float) Math.toRadians(lerpAngle), 0f, 0f, 1f);
-        //renderer.updateUniModel(model);
+        renderer.updateUniModel(model);*/
         renderer.clear();
         
         /* Draw objects */
         renderer.begin();
-        //renderer.render(floor.getVertices(), floor.getNbvertices());
+        renderer.render(floor.getVertices(), floor.getNbvertices());
         renderer.render(cube.getVertices(), cube.getNbvertices());
         renderer.end();
     }

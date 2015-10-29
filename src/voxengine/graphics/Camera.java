@@ -18,7 +18,8 @@ public class Camera {
     public Vector3f position;
     public Vector3f view;
     
-    private float previousAngle = 0f;
+    private float previousHAngle = 0f;
+    private float previousVAngle = 0f;
     
     public Camera(float posX, float posY, float posZ, float viewX, float viewY, float viewZ) {
         position = new Vector3f(posX, posY, posZ);
@@ -73,17 +74,30 @@ public class Camera {
         view.add(mvm);
     }
     
-    public void turnRight(float angle) {
-        if(angle != previousAngle) {
-            System.out.println("Angle: " + angle);
+    public void turn(float hAngle, float vAngle) {
+        if(hAngle != 0) {
             Vector3f newView = new Vector3f(view);
-            new Matrix4f().translate(position)
-                    .rotate((float) Math.toRadians(angle), 0f, 0f, 1f)
-                    .translate(position.negate())
+            Vector3f center = new Vector3f(position);
+            new Matrix4f().translate(center)
+                    .rotate((float) Math.toRadians(360 - hAngle), 0f, 0f, 1f)
+                    .translate(center.negate())
                     .transformPoint(newView);
-            System.out.println("Camera position: " + position.x + " " + position.y + " " + position.z);
-            System.out.println("Previous view: " + view.x + " " + view.y + " " + view.z + " New view: " + newView.x + " " + newView.y + " " + newView.z);
             view.set(newView);
+            previousHAngle = hAngle;
+        }
+        
+        if(vAngle != 0) {
+            System.out.println("Angle: " + vAngle);
+            Vector3f newView = new Vector3f(view);
+            Vector3f center = new Vector3f(position);
+            //System.out.print("Previous view: " + (int)newView.x + "("+(int)view.x+") " + (int)newView.y + "("+(int)view.y+") " + (int)newView.z + "("+(int)view.z+") "); 
+            new Matrix4f().translate(center)
+                    .rotate((float) Math.toRadians(360 - vAngle), 1f, 0f, 0f)
+                    .translate(center.negate())
+                    .transformPoint(newView);
+            //System.out.println(" New view: " + (int)newView.x + " " + (int)newView.y + " " + (int)newView.z);
+            view.set(newView);
+            previousVAngle = vAngle;
         }
     }
 
