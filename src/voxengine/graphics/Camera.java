@@ -5,7 +5,6 @@
  */
 package voxengine.graphics;
 
-import voxengine.math.joml.Matrix3f;
 import voxengine.math.joml.Matrix4f;
 import voxengine.math.joml.Vector3f;
 
@@ -17,9 +16,7 @@ public class Camera {
     
     public Vector3f position;
     public Vector3f view;
-    
-    private float previousHAngle = 0f;
-    private float previousVAngle = 0f;
+    private boolean isUpdated = false;
     
     public Camera(float posX, float posY, float posZ, float viewX, float viewY, float viewZ) {
         position = new Vector3f(posX, posY, posZ);
@@ -38,17 +35,19 @@ public class Camera {
         return direction;
     }
     
-    private Vector3f calculateDirection() {
+    private Vector3f calculateNormalizedDirection(Vector3f u, Vector3f v) {
         Vector3f direction = new Vector3f();
-        view.sub(position, direction);
+        v.sub(u, direction);
+        direction.normalize();
         return direction;
-    } 
+    }
     
     public void moveForward(float move) {
         Vector3f direction = calculateNormalizedDirection();
         Vector3f mvm = new Vector3f(direction.x * move, direction.y * move, direction.z * move);
         position.add(mvm);
         view.add(mvm);
+        isUpdated = true;
     }
     
     public void moveBackward(float move) {
@@ -56,22 +55,25 @@ public class Camera {
         Vector3f mvm = new Vector3f(direction.x * move, direction.y * move, direction.z * move);
         position.sub(mvm);
         view.sub(mvm);
+        isUpdated = true;
     }
     
     public void moveRight(float move) {
         Vector3f direction = calculateNormalizedDirection();
-        Vector3f rightDirection = new Vector3f(direction.y, -direction.x, direction.z);
+        Vector3f rightDirection = new Vector3f(direction.y, -direction.x, 0);
         Vector3f mvm = new Vector3f(rightDirection.x * move, rightDirection.y * move, rightDirection.z * move);
         position.add(mvm);
         view.add(mvm);
+        isUpdated = true;
     }
     
     public void moveLeft(float move) {
         Vector3f direction = calculateNormalizedDirection();
-        Vector3f leftDirection = new Vector3f(-direction.y, direction.x, direction.z);
+        Vector3f leftDirection = new Vector3f(-direction.y, direction.x, 0);
         Vector3f mvm = new Vector3f(leftDirection.x * move, leftDirection.y * move, leftDirection.z * move);
         position.add(mvm);
         view.add(mvm);
+        isUpdated = true;
     }
     
     public void turn(float hAngle, float vAngle) {
@@ -83,21 +85,25 @@ public class Camera {
                     .translate(center.negate())
                     .transformPoint(newView);
             view.set(newView);
-            previousHAngle = hAngle;
+            isUpdated = true;
         }
         
         if(vAngle != 0) {
-            System.out.println("Angle: " + vAngle);
             Vector3f newView = new Vector3f(view);
             Vector3f center = new Vector3f(position);
-            //System.out.print("Previous view: " + (int)newView.x + "("+(int)view.x+") " + (int)newView.y + "("+(int)view.y+") " + (int)newView.z + "("+(int)view.z+") "); 
             new Matrix4f().translate(center)
                     .rotate((float) Math.toRadians(360 - vAngle), 1f, 0f, 0f)
                     .translate(center.negate())
                     .transformPoint(newView);
-            //System.out.println(" New view: " + (int)newView.x + " " + (int)newView.y + " " + (int)newView.z);
-            view.set(newView);
-            previousVAngle = vAngle;
+            Vector3f baseDirection = calculateNormalizedDirection();
+            baseDirection.z = 0;
+            Vector3f newDirection = calculateNormalizedDirection(position, newView);
+            float maxAngle = (float) Math.toDegrees(newDirection.angle(baseDirection));
+            System.out.println("Max angle: "+maxAngle);
+            if(maxAngle <= 80) {
+                view.set(newView);
+                isUpdated = true;
+            }
         }
     }
 
@@ -115,6 +121,10 @@ public class Camera {
 
     public void setView(Vector3f view) {
         this.view = view;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
     }
     
 }

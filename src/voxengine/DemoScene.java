@@ -14,7 +14,6 @@ import voxengine.graphics.Camera;
 import voxengine.graphics.Texture;
 import voxengine.graphics.renderer.CubeRenderer;
 import voxengine.graphics.shape.Cube;
-import voxengine.graphics.shape.Rect;
 import voxengine.graphics.shape.Rect3d;
 import voxengine.math.joml.Matrix4f;
 import voxengine.math.joml.Vector3f;
@@ -27,7 +26,7 @@ public class DemoScene implements Scene{
     
     private CubeRenderer renderer;
     private Texture texture;
-    private Rect3d floor;
+    private Rect3d floor, sky;
     private Cube cube;
     private Camera camera;
     private float previousAngle = 0f;
@@ -44,25 +43,21 @@ public class DemoScene implements Scene{
         int state = glfwGetKey(window, GLFW_KEY_DOWN);
         if (state == GLFW_PRESS) {
             camera.moveBackward(1);
-            renderer.setCamera(camera);
         }
         
         state = glfwGetKey(window, GLFW_KEY_UP);
         if (state == GLFW_PRESS) {
             camera.moveForward(1);
-            renderer.setCamera(camera);
         }
         
         state = glfwGetKey(window, GLFW_KEY_RIGHT);
         if (state == GLFW_PRESS) {
             camera.moveRight(1);
-            renderer.setCamera(camera);
         }
         
         state = glfwGetKey(window, GLFW_KEY_LEFT);
         if (state == GLFW_PRESS) {
             camera.moveLeft(1);
-            renderer.setCamera(camera);
         }
         
         DoubleBuffer xpos = BufferUtils.createDoubleBuffer(1);
@@ -74,10 +69,7 @@ public class DemoScene implements Scene{
         previousYpos = ypos;
         float horizontalAngle = mouseSpeed * (float) deltaXpos;
         float verticalAngle = mouseSpeed * (float) deltaYpos;
-        //System.out.println("horizontalAngle: "+horizontalAngle+", verticalAngle: "+verticalAngle);
         camera.turn(horizontalAngle, verticalAngle);
-        renderer.setCamera(camera);
-        //System.out.println("deltaXpos: "+deltaXpos+", deltaYpos: "+deltaYpos);
     }
 
     @Override
@@ -92,11 +84,17 @@ public class DemoScene implements Scene{
         /*float lerpAngle = (1f - alpha) * previousAngle + alpha * angle * 0.00001f;
         Matrix4f model = new Matrix4f().rotate((float) Math.toRadians(lerpAngle), 0f, 0f, 1f);
         renderer.updateUniModel(model);*/
+        
+        /* Update camera if needed */
+        if(camera.isUpdated())
+            renderer.setCamera(camera);
+        
         renderer.clear();
         
         /* Draw objects */
         renderer.begin();
         renderer.render(floor.getVertices(), floor.getNbvertices());
+        renderer.render(sky.getVertices(), sky.getNbvertices());
         renderer.render(cube.getVertices(), cube.getNbvertices());
         renderer.end();
     }
@@ -120,6 +118,7 @@ public class DemoScene implements Scene{
 
         cube = new Cube(Color.WHITE, texture, 1, 1, 0, 10, 10, 10, 0, 0, texture.getWidth(), texture.getHeight());
         floor = new Rect3d(Color.GREEN, texture, -100, -100, 0, 1000, 1000, 0, 0, 0, 0);
+        sky = new Rect3d(Color.BLUE, texture, -1000, -1000, 500, 10000, 10000, 0, 0, 0, 0);
         System.out.println("DONE");
         
         Vector3f newView = new Vector3f(1,0,1);
