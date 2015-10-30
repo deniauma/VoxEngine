@@ -16,7 +16,7 @@ import voxengine.math.Vector3f;
  *
  * @author deniauma
  */
-public class Rect3d {
+public class Rect3d implements Renderable{
     
     public final char X_AXIS = 'x';
     public final char Y_AXIS = 'y';
@@ -76,10 +76,12 @@ public class Rect3d {
         vertices.get(verticesArray);
     }
     
+    @Override
     public float[] getVertices() {
         return verticesArray;
     }
     
+    @Override
     public int getNbvertices() {
         return nbvertices;
     }

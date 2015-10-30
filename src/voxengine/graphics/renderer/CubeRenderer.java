@@ -17,6 +17,7 @@ import voxengine.graphics.Shader;
 import voxengine.graphics.ShaderProgram;
 import voxengine.graphics.VertexArrayObject;
 import voxengine.graphics.VertexBufferObject;
+import voxengine.graphics.shape.Renderable;
 import voxengine.math.joml.Matrix4f;
 import voxengine.math.joml.Vector3f;
 
@@ -175,13 +176,23 @@ public class CubeRenderer {
     }
     
     public void render(float[] tVertices, int nbVertices) {
-        if (vertices.remaining() < 8 * 6) {
+        if (vertices.remaining() < 8 * nbVertices) {
             /* We need more space in the buffer, so flush it */
             flush();
         }
         
         vertices.put(tVertices);
         numVertices += nbVertices;
+    }
+    
+    public void render(Renderable entity) {
+        if (vertices.remaining() < 8 * entity.getNbvertices()) {
+            /* We need more space in the buffer, so flush it */
+            flush();
+        }
+        
+        vertices.put(entity.getVertices());
+        numVertices += entity.getNbvertices();
     }
     
     /**

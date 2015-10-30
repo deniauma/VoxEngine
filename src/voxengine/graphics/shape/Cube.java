@@ -16,7 +16,7 @@ import voxengine.math.Vector3f;
  *
  * @author deniauma
  */
-public class Cube {
+public class Cube implements Renderable{
     
     protected Vector3f position;
     protected int width;
@@ -27,8 +27,6 @@ public class Cube {
     protected Vector2f tposition;
     protected int twidth;
     protected int theight;
-    protected final int nbSides = 6;
-    protected Rect3d[] sides;
     
     protected final int nbvertices = 36;
     protected final int nbElementsPerVertice = 8;
@@ -46,7 +44,6 @@ public class Cube {
         this.twidth = twidth;
         this.theight = theight;
         
-        sides = new Rect3d[nbSides];
         vertices = BufferUtils.createFloatBuffer(nbvertices * nbElementsPerVertice);
         
         float r = color.getRed() / 255f;
@@ -115,10 +112,12 @@ public class Cube {
         vertices.get(verticesArray);
     }
     
+    @Override
     public float[] getVertices() {
         return verticesArray;
     }
     
+    @Override
     public int getNbvertices() {
         return nbvertices;
     }

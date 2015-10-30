@@ -15,6 +15,7 @@ import voxengine.graphics.Texture;
 import voxengine.graphics.renderer.CubeRenderer;
 import voxengine.graphics.shape.Cube;
 import voxengine.graphics.shape.Rect3d;
+import voxengine.graphics.shape.Renderable;
 import voxengine.math.joml.Matrix4f;
 import voxengine.math.joml.Vector3f;
 
@@ -26,8 +27,8 @@ public class DemoScene implements Scene{
     
     private CubeRenderer renderer;
     private Texture texture;
-    private Rect3d floor, sky;
-    private Cube cube;
+    private Renderable floor, sky;
+    private Renderable cube;
     private Camera camera;
     private float previousAngle = 0f;
     private float angle, cAngle = 0f;
@@ -93,9 +94,9 @@ public class DemoScene implements Scene{
         
         /* Draw objects */
         renderer.begin();
-        renderer.render(floor.getVertices(), floor.getNbvertices());
-        renderer.render(sky.getVertices(), sky.getNbvertices());
-        renderer.render(cube.getVertices(), cube.getNbvertices());
+        renderer.render(floor);
+        renderer.render(sky);
+        renderer.render(cube);
         renderer.end();
     }
 
