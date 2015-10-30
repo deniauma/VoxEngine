@@ -8,11 +8,14 @@ package voxengine;
 import java.awt.Color;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.glfw.GLFW.*;
 import voxengine.graphics.Camera;
 import voxengine.graphics.Texture;
 import voxengine.graphics.renderer.CubeRenderer;
+import voxengine.graphics.renderer.SkyBoxRenderer;
 import voxengine.graphics.shape.Cube;
 import voxengine.graphics.shape.Rect3d;
 import voxengine.graphics.shape.Renderable;
@@ -26,6 +29,7 @@ import voxengine.math.joml.Vector3f;
 public class DemoScene implements Scene{
     
     private CubeRenderer renderer;
+    private SkyBoxRenderer skyRenderer;
     private Texture texture;
     private Renderable floor, sky;
     private Renderable cube;
@@ -88,16 +92,18 @@ public class DemoScene implements Scene{
         
         /* Update camera if needed */
         if(camera.isUpdated())
+            skyRenderer.setCamera(camera);
             renderer.setCamera(camera);
-        
-        renderer.clear();
+            
+        skyRenderer.render();
+        //renderer.clear();
         
         /* Draw objects */
-        renderer.begin();
+        /*renderer.begin();
         renderer.render(floor);
         renderer.render(sky);
         renderer.render(cube);
-        renderer.end();
+        renderer.end();*/
     }
 
     @Override
@@ -112,6 +118,9 @@ public class DemoScene implements Scene{
         renderer = new CubeRenderer();
         camera = new Camera(1f, -90f, 1f, 1f, 0, 1f);
         renderer.init(camera);
+        
+        skyRenderer = new SkyBoxRenderer();
+        skyRenderer.init(camera);
         
         /* Create texture */
         texture = Texture.loadTexture("resources/example.png");

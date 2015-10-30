@@ -24,7 +24,6 @@ import org.lwjgl.BufferUtils;
 import static java.awt.Font.MONOSPACED;
 import static java.awt.Font.PLAIN;
 import static java.awt.Font.TRUETYPE_FONT;
-import voxengine.graphics.Renderer;
 import voxengine.graphics.Texture;
 
 /**
@@ -329,13 +328,12 @@ public class Font {
     /**
      * Draw text at the specified position and color.
      *
-     * @param renderer The renderer to use
      * @param text Text to draw
      * @param x X coordinate of the text position
      * @param y Y coordinate of the text position
      * @param c Color to use
      */
-    public void drawText(Renderer renderer, CharSequence text, float x, float y, Color c) {
+    public void drawText(CharSequence text, float x, float y, Color c) {
         int textHeight = getHeight(text);
 
         float drawX = x;
@@ -345,7 +343,7 @@ public class Font {
         }
 
         texture.bind();
-        renderer.begin();
+        //renderer.begin();
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
             if (ch == '\n') {
@@ -359,10 +357,10 @@ public class Font {
                 continue;
             }
             Glyph g = glyphs.get(ch);
-            renderer.drawTextureRegion(texture, drawX, drawY, g.x, g.y, g.width, g.height, c);
+            //renderer.drawTextureRegion(texture, drawX, drawY, g.x, g.y, g.width, g.height, c);
             drawX += g.width;
         }
-        renderer.end();
+        //renderer.end();
     }
 
     /**
@@ -373,8 +371,8 @@ public class Font {
      * @param x X coordinate of the text position
      * @param y Y coordinate of the text position
      */
-    public void drawText(Renderer renderer, CharSequence text, float x, float y) {
-        drawText(renderer, text, x, y, Color.WHITE);
+    public void drawText(CharSequence text, float x, float y) {
+        drawText(text, x, y, Color.WHITE);
     }
 
     /**
