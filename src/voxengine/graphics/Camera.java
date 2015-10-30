@@ -99,7 +99,6 @@ public class Camera {
             baseDirection.z = 0;
             Vector3f newDirection = calculateNormalizedDirection(position, newView);
             float maxAngle = (float) Math.toDegrees(newDirection.angle(baseDirection));
-            System.out.println("Max angle: "+maxAngle);
             if(maxAngle <= 80) {
                 view.set(newView);
                 isUpdated = true;

@@ -31,6 +31,7 @@ public class Cube {
     protected Rect3d[] sides;
     
     protected final int nbvertices = 36;
+    protected final int nbElementsPerVertice = 8;
     protected FloatBuffer vertices;
     private float[] verticesArray;
     
@@ -46,7 +47,7 @@ public class Cube {
         this.theight = theight;
         
         sides = new Rect3d[nbSides];
-        vertices = BufferUtils.createFloatBuffer(18 * 8);
+        vertices = BufferUtils.createFloatBuffer(nbvertices * nbElementsPerVertice);
         
         float r = color.getRed() / 255f;
         float g = color.getGreen() / 255f;
@@ -87,9 +88,30 @@ public class Cube {
         vertices.put(x1).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
         vertices.put(x1).put(y2).put(z1).put(r).put(g).put(b).put(s2).put(t1);
         
+        vertices.put(x2).put(y2).put(z1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(z2).put(r).put(g).put(b).put(s1).put(t2);
+        vertices.put(x1).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y2).put(z1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x1).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x1).put(y2).put(z1).put(r).put(g).put(b).put(s2).put(t1);
+        
+        vertices.put(x2).put(y1).put(z1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y1).put(z2).put(r).put(g).put(b).put(s1).put(t2);
+        vertices.put(x2).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y1).put(z1).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y2).put(z1).put(r).put(g).put(b).put(s2).put(t1);
+        
+        vertices.put(x1).put(y1).put(z2).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x1).put(y2).put(z2).put(r).put(g).put(b).put(s1).put(t2);
+        vertices.put(x2).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x1).put(y1).put(z2).put(r).put(g).put(b).put(s1).put(t1);
+        vertices.put(x2).put(y2).put(z2).put(r).put(g).put(b).put(s2).put(t2);
+        vertices.put(x2).put(y1).put(z2).put(r).put(g).put(b).put(s2).put(t1);
+        
         vertices.flip();
         
-        verticesArray = new float[18 * 8];
+        verticesArray = new float[nbvertices * nbElementsPerVertice];
         vertices.get(verticesArray);
     }
     
