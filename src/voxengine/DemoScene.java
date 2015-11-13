@@ -91,19 +91,20 @@ public class DemoScene implements Scene{
         renderer.updateUniModel(model);*/
         
         /* Update camera if needed */
-        if(camera.isUpdated())
+        if(camera.isUpdated()){
             skyRenderer.setCamera(camera);
             renderer.setCamera(camera);
+        }
             
         skyRenderer.render();
         //renderer.clear();
         
         /* Draw objects */
-        /*renderer.begin();
-        renderer.render(floor);
-        renderer.render(sky);
+        renderer.begin();
+        //renderer.render(floor);
+        //renderer.render(sky);
         renderer.render(cube);
-        renderer.end();*/
+        renderer.end();
     }
 
     @Override
@@ -116,7 +117,7 @@ public class DemoScene implements Scene{
         int width = widthBuffer.get();
         int height = heightBuffer.get();
         renderer = new CubeRenderer();
-        camera = new Camera(1f, -90f, 1f, 1f, 0, 1f);
+        camera = new Camera(0f, 0f, 0f, 0f, 1f, 0f);
         renderer.init(camera);
         
         skyRenderer = new SkyBoxRenderer();

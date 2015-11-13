@@ -50,18 +50,18 @@ public class CubeMapTexture {
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, id);
 
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA8, data.get(RIGHT).sWidth, data.get(RIGHT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(RIGHT).sData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA8, data.get(LEFT).sWidth, data.get(LEFT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(LEFT).sData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA8, data.get(FRONT).sWidth, data.get(FRONT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(FRONT).sData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA8, data.get(BACK).sWidth, data.get(BACK).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(BACK).sData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA8, data.get(TOP).sWidth, data.get(TOP).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(TOP).sData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA8, data.get(BOTTOM).sWidth, data.get(BOTTOM).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(BOTTOM).sData);
+        
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA8, data.get(RIGHT).sWidth, data.get(RIGHT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(RIGHT).sData);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA8, data.get(LEFT).sWidth, data.get(LEFT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(LEFT).sData);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA8, data.get(TOP).sWidth, data.get(TOP).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(TOP).sData);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA8, data.get(BOTTOM).sWidth, data.get(BOTTOM).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(BOTTOM).sData);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA8, data.get(BACK).sWidth, data.get(BACK).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(BACK).sData);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA8, data.get(FRONT).sWidth, data.get(FRONT).sHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.get(FRONT).sData);
     }
 
     /**

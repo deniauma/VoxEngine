@@ -83,7 +83,7 @@ public class Engine {
         glfwDefaultWindowHints();
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
         window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
         if (window == NULL) {

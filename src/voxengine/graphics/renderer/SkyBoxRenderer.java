@@ -95,18 +95,18 @@ public class SkyBoxRenderer {
         vertices.put(-1f).put(-1f).put(1f);
 
         vertices.put(-1f).put(1f).put(-1f);
+        vertices.put(-1f).put(1f).put(1f);
+        vertices.put(1f).put(1f).put(1f);
+        vertices.put(-1f).put(1f).put(-1f);
         vertices.put(1f).put(1f).put(-1f);
         vertices.put(1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(-1f).put(1f).put(1f);
-        vertices.put(-1f).put(1f).put(-1f);
 
         vertices.put(-1f).put(-1f).put(-1f);
         vertices.put(-1f).put(-1f).put(1f);
-        vertices.put(1f).put(-1f).put(-1f);
-        vertices.put(1f).put(-1f).put(-1f);
-        vertices.put(-1f).put(-1f).put(1f);
         vertices.put(1f).put(-1f).put(1f);
+        vertices.put(1f).put(-1f).put(1f);
+        vertices.put(-1f).put(-1f).put(-1f);
+        vertices.put(1f).put(-1f).put(-1f);
         
         vertices.flip();
         
@@ -150,12 +150,12 @@ public class SkyBoxRenderer {
         program.setUniform(uniProjection, projection);
         
         Map<String, String> skyBoxtextures = new HashMap<>();
-        skyBoxtextures.put(CubeMapTexture.RIGHT, "resources/siege_rt.png");
-        skyBoxtextures.put(CubeMapTexture.LEFT, "resources/siege_lf.png");
-        skyBoxtextures.put(CubeMapTexture.TOP, "resources/siege_up.png");
-        skyBoxtextures.put(CubeMapTexture.BOTTOM, "resources/siege_dn.png");
-        skyBoxtextures.put(CubeMapTexture.FRONT, "resources/siege_ft.png");
-        skyBoxtextures.put(CubeMapTexture.BACK, "resources/siege_bk.png");
+        skyBoxtextures.put(CubeMapTexture.RIGHT, "resources/right.jpg");
+        skyBoxtextures.put(CubeMapTexture.LEFT, "resources/left.jpg");
+        skyBoxtextures.put(CubeMapTexture.TOP, "resources/top.jpg");
+        skyBoxtextures.put(CubeMapTexture.BOTTOM, "resources/bottom.jpg");
+        skyBoxtextures.put(CubeMapTexture.FRONT, "resources/front.jpg");
+        skyBoxtextures.put(CubeMapTexture.BACK, "resources/back.jpg");
         texture = CubeMapTexture.loadTextures(skyBoxtextures);
 
     }
@@ -163,11 +163,14 @@ public class SkyBoxRenderer {
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glDepthMask(false);
-        vao.bind();
         program.use();
-        vbo.bind(GL_ARRAY_BUFFER);
-        specifyVertexAttributes();
+        updateUniView();
+        vao.bind();
+        program.setUniform(program.getUniformLocation("skybox"), 0);
         texture.bind();
+        //vbo.bind(GL_ARRAY_BUFFER);
+        
+        
         glDrawArrays(GL_TRIANGLES, 0, numVertices);
         glDepthMask(true);
     }
@@ -195,7 +198,13 @@ public class SkyBoxRenderer {
         program.pointVertexAttribute(posAttrib, 3, 3 * Float.BYTES, 0);
     }
 
-    public void updateUniView(Matrix4f view) {
+    public void updateUniView() {
+        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
+        Matrix3f m3 = new Matrix3f();
+        System.out.println("View matrix: " + view.toString());
+        view.get3x3(m3);
+        m3.get(view);
+        System.out.println("New view matrix: " + view.toString());
         program.setUniform(uniView, view);
     }
 
@@ -205,13 +214,6 @@ public class SkyBoxRenderer {
     
     public void setCamera(Camera camera) {
         this.camera = camera;
-        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
-        Matrix3f m3 = new Matrix3f();
-        System.out.println("View matrix: "+view.toString());
-        view.get3x3(m3);
-        m3.get(view);
-        System.out.println("New view matrix: "+view.toString());
-        program.setUniform(uniView, view);
     }
     
 }
