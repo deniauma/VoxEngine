@@ -66,47 +66,47 @@ public class SkyBoxRenderer {
 
         /* Create FloatBuffer */
         vertices = BufferUtils.createFloatBuffer(numVertices * 3);
-        vertices.put(-1f).put(1f).put(-1f);
+        vertices.put(-1f).put( 1f).put(-1f);
         vertices.put(-1f).put(-1f).put(-1f);
-        vertices.put(1f).put(-1f).put(-1f);
-        vertices.put(1f).put(-1f).put(-1f);
-        vertices.put(1f).put(1f).put(-1f);
-        vertices.put(-1f).put(1f).put(-1f);
+        vertices.put( 1f).put(-1f).put(-1f);
+        vertices.put( 1f).put(-1f).put(-1f);
+        vertices.put( 1f).put( 1f).put(-1f);
+        vertices.put(-1f).put( 1f).put(-1f);
 
-        vertices.put(-1f).put(-1f).put(1f);
+        vertices.put(-1f).put(-1f).put( 1f);
         vertices.put(-1f).put(-1f).put(-1f);
-        vertices.put(-1f).put(1f).put(-1f);
-        vertices.put(-1f).put(1f).put(-1f);
-        vertices.put(-1f).put(1f).put(1f);
-        vertices.put(-1f).put(-1f).put(1f);
+        vertices.put(-1f).put( 1f).put(-1f);
+        vertices.put(-1f).put( 1f).put(-1f);
+        vertices.put(-1f).put( 1f).put( 1f);
+        vertices.put(-1f).put(-1f).put( 1f);
 
-        vertices.put(1f).put(-1f).put(-1f);
-        vertices.put(1f).put(-1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(-1f);
-        vertices.put(1f).put(-1f).put(-1f);
+        vertices.put( 1f).put(-1f).put( 1f);
+        vertices.put( 1f).put(-1f).put(-1f);
+        vertices.put( 1f).put( 1f).put(-1f);
+        vertices.put( 1f).put( 1f).put(-1f);
+        vertices.put( 1f).put( 1f).put( 1f);
+        vertices.put( 1f).put(-1f).put( 1f);
 
-        vertices.put(-1f).put(-1f).put(1f);
-        vertices.put(-1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(1f).put(-1f).put(1f);
-        vertices.put(-1f).put(-1f).put(1f);
+        vertices.put(-1f).put(-1f).put( 1f);
+        vertices.put(-1f).put( 1f).put( 1f);
+        vertices.put( 1f).put( 1f).put( 1f);
+        vertices.put( 1f).put( 1f).put( 1f);
+        vertices.put( 1f).put(-1f).put( 1f);
+        vertices.put(-1f).put(-1f).put( 1f);
 
-        vertices.put(-1f).put(1f).put(-1f);
-        vertices.put(-1f).put(1f).put(1f);
-        vertices.put(1f).put(1f).put(1f);
-        vertices.put(-1f).put(1f).put(-1f);
-        vertices.put(1f).put(1f).put(-1f);
-        vertices.put(1f).put(1f).put(1f);
+        vertices.put(-1f).put( 1f).put(-1f);
+        vertices.put(-1f).put( 1f).put( 1f);
+        vertices.put( 1f).put( 1f).put( 1f);
+        vertices.put( 1f).put( 1f).put( 1f);
+        vertices.put( 1f).put( 1f).put(-1f);
+        vertices.put(-1f).put( 1f).put(-1f);
 
         vertices.put(-1f).put(-1f).put(-1f);
-        vertices.put(-1f).put(-1f).put(1f);
-        vertices.put(1f).put(-1f).put(1f);
-        vertices.put(1f).put(-1f).put(1f);
+        vertices.put(-1f).put(-1f).put( 1f);
+        vertices.put( 1f).put(-1f).put( 1f);
+        vertices.put( 1f).put(-1f).put( 1f);
+        vertices.put( 1f).put(-1f).put(-1f);
         vertices.put(-1f).put(-1f).put(-1f);
-        vertices.put(1f).put(-1f).put(-1f);
         
         vertices.flip();
         
@@ -199,12 +199,10 @@ public class SkyBoxRenderer {
     }
 
     public void updateUniView() {
-        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
+        Matrix4f view = camera.getViewMatrix();
         Matrix3f m3 = new Matrix3f();
-        System.out.println("View matrix: " + view.toString());
         view.get3x3(m3);
         m3.get(view);
-        System.out.println("New view matrix: " + view.toString());
         program.setUniform(uniView, view);
     }
 

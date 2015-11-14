@@ -103,7 +103,7 @@ public class CubeRenderer {
 
         /* Set view matrix to identity matrix 
         Matrix4f view = new Matrix4f();*/
-        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
+        Matrix4f view = camera.getViewMatrix();
         uniView = program.getUniformLocation("view");
         program.setUniform(uniView, view);
 
@@ -234,7 +234,7 @@ public class CubeRenderer {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
-        Matrix4f view = new Matrix4f().lookAt(camera.position, camera.view, new Vector3f(0f, 0f, 1f));
+        Matrix4f view = camera.getViewMatrix();
         program.setUniform(uniView, view);
     }
     

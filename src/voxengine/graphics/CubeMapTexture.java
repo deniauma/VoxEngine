@@ -96,12 +96,14 @@ public class CubeMapTexture {
                         + System.lineSeparator() + ex.getMessage());
             }
             if (image != null) {
-                /* Flip image Horizontal to get the origin to bottom left */
-                AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
-                transform.translate(0, -image.getHeight());
-                AffineTransformOp operation = new AffineTransformOp(transform,
-                        AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-                image = operation.filter(image, null);
+                //if(!"back".equals(entry.getKey()) && !"top".equals(entry.getKey())){
+                    /* Flip image Horizontal to get the origin to bottom left */
+                    AffineTransform transform = AffineTransform.getScaleInstance(1f, -1f);
+                    transform.translate(0, -image.getHeight());
+                    AffineTransformOp operation = new AffineTransformOp(transform,
+                            AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                    image = operation.filter(image, null);
+                //}
 
                 /* Get width and height of image */
                 int width = image.getWidth();

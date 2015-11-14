@@ -69,9 +69,10 @@ public class DemoScene implements Scene{
         DoubleBuffer ypos = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(window, xpos, ypos);
         double deltaXpos = xpos.get(0) - previousXpos.get(0);
-        double deltaYpos = ypos.get(0) - previousYpos.get(0);
+        double deltaYpos = previousYpos.get(0) - ypos.get(0);
         previousXpos = xpos;
         previousYpos = ypos;
+        //System.out.println("Delta yPos= "+deltaYpos);
         float horizontalAngle = mouseSpeed * (float) deltaXpos;
         float verticalAngle = mouseSpeed * (float) deltaYpos;
         camera.turn(horizontalAngle, verticalAngle);
@@ -95,9 +96,8 @@ public class DemoScene implements Scene{
             skyRenderer.setCamera(camera);
             renderer.setCamera(camera);
         }
-            
+        renderer.clear();    
         skyRenderer.render();
-        //renderer.clear();
         
         /* Draw objects */
         renderer.begin();
@@ -132,13 +132,14 @@ public class DemoScene implements Scene{
         sky = new Rect3d(Color.BLUE, texture, -1000, -1000, 500, 10000, 10000, 0, 0, 0, 0);
         System.out.println("DONE");
         
-        Vector3f newView = new Vector3f(1,0,1);
-        Vector3f center = new Vector3f(1,-90,1);
-        new Matrix4f().translate(center)
-                      .rotate((float) Math.toRadians(360-90), 0f, 0f, 1f)
-                      .translate(center.negate())
-                      .transformPoint(newView);
-        System.out.println("Camera position: "+newView.x+" "+newView.y+" "+newView.z);
+        /*Vector3f view = new Vector3f(1,2,1);
+        Vector3f pos = new Vector3f(1,1,1);
+        Vector3f dir = Camera.calculateNormalizedDirection(pos, view);
+        new Matrix4f().rotate((float) Math.toRadians(45), 1f, 0f, 0f)
+                      .rotate((float) Math.toRadians(360-45), 0f, 0f, 1f)
+                      .transformPoint(dir);
+        pos.add(dir, view);
+        System.out.println("Camera position: "+view.x+" "+view.y+" "+view.z);*/
         glfwGetCursorPos(window, previousXpos, previousYpos);
     }
 
